@@ -122,7 +122,8 @@ class MinimalViewer:
         self.window.connect("delete-event", Gtk.main_quit)
         self.window.connect("check_resize", self._on_resize)
         self.window.connect("key-press-event", self._on_key_press)
-
+        self.window.connect('scroll-event', self.scroll_notify_event)
+        
         # Image
         self.scrolledwindow1 = self.builder.get_object("scrolledwindow1")
         self.pixbuf = GdkPixbuf.Pixbuf()
@@ -240,6 +241,12 @@ class MinimalViewer:
             self.lastResize = [scrolledAllocation.width,scrolledAllocation.height]
             self.labelScale.set_label("%d%%" % totalscale);
 
+    def scroll_notify_event(self, w, e):
+        if e.direction == Gdk.ScrollDirection.UP:
+           self.nextImage()
+        elif e.direction == Gdk.ScrollDirection.DOWN:
+           self.nextImage()            
+            
 def main():
     ext = (".jpg",".gif",".bmp",".tif",".png",".tga",".webp")
     filename = False
@@ -275,5 +282,5 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         print("Usage: python MinimalImageViewer.py imagefile.jpg")
         print("       python MinimalImageViewer.py myphotofolder")
-        print("Navigate in a directory with the keyboard arrow keys")
-    sys.exit(main())
+        print("Navigate in a directory with the keyboard arrow keys or mouse scroll")
+sys.exit(main())
