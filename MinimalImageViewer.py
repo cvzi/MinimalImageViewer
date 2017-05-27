@@ -245,7 +245,7 @@ class MinimalViewer:
         if e.direction == Gdk.ScrollDirection.UP:
            self.nextImage()
         elif e.direction == Gdk.ScrollDirection.DOWN:
-           self.nextImage()            
+           self.previousImage()          
             
 def main():
     ext = (".jpg",".gif",".bmp",".tif",".png",".tga",".webp")
