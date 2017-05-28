@@ -123,6 +123,7 @@ class MinimalViewer:
         self.window.connect("check_resize", self._on_resize)
         self.window.connect("key-press-event", self._on_key_press)
         self.window.connect('scroll-event', self.scroll_notify_event)
+        self.window.connect("window-state-event", self.on_window_state_event)
         
         # Image
         self.scrolledwindow1 = self.builder.get_object("scrolledwindow1")
@@ -203,7 +204,10 @@ class MinimalViewer:
             self.nextImage()
             win.emit_stop_by_name("key-press-event")
             return True
-
+        elif key == 'f':
+            self.fullscreen_mode()
+            
+            
     def _on_resize(self, window=None, force=False):
         # Check whether a resize is possible/needed
         if not self.filename:
@@ -245,8 +249,18 @@ class MinimalViewer:
         if e.direction == Gdk.ScrollDirection.UP:
            self.nextImage()
         elif e.direction == Gdk.ScrollDirection.DOWN:
-           self.previousImage()          
-            
+           self.previousImage()
+
+    def fullscreen_mode(self):
+        if self.__is_fullscreen:
+            self.window.unfullscreen()
+        else:
+            self.window.fullscreen()
+
+    def on_window_state_event(self, widget, ev):
+        self.__is_fullscreen = bool(ev.new_window_state & Gdk.WindowState.FULLSCREEN)
+
+           
 def main():
     ext = (".jpg",".gif",".bmp",".tif",".png",".tga",".webp")
     filename = False
@@ -274,13 +288,11 @@ def main():
 
     win = MinimalViewer(images,index)
     win.window.show_all()
-    Gdk.threads_enter()
     Gtk.main()
-    Gdk.threads_leave()
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         print("Usage: python MinimalImageViewer.py imagefile.jpg")
         print("       python MinimalImageViewer.py myphotofolder")
-        print("Navigate in a directory with the keyboard arrow keys or mouse scroll")
-sys.exit(main())
+        print("Navigate in a directory with the keyboard arrow keys or mouse scroll, f key for fullscreen")
+    sys.exit(main())
