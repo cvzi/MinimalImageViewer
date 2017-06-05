@@ -287,6 +287,7 @@ def main():
             pass
 
     win = MinimalViewer(images,index)
+    win.window.set_position(Gtk.WindowPosition.CENTER)
     win.window.show_all()
     Gtk.main()
 
