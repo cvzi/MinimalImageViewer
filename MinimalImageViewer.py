@@ -289,6 +289,9 @@ def main():
     win = MinimalViewer(images,index)
     win.window.set_position(Gtk.WindowPosition.CENTER)
     win.window.show_all()
+    win.window.set_keep_above(True)
+    win.window.set_accept_focus(True)
+    win.window.present()    
     Gtk.main()
 
 if __name__ == "__main__":
