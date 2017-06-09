@@ -3,6 +3,9 @@
 # PyGI 3.12.2
 # GTK 3.0
 
+from gi import require_version
+require_version("Gtk", "3.0")
+
 from gi.repository import Gtk, Gdk, GdkPixbuf, GObject
 import sys
 import os
@@ -10,10 +13,10 @@ import math
 
 def humanBytes(x, p = 1, k = 1024):
     if 0 == x:
-        return '0 Byte'
-    sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        return "0 Byte"
+    sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
     i = math.floor(math.log(x) / math.log(k))
-    return ('%.' + str(p) + 'f %s') % ((x / math.pow(k, i)) , sizes[int(i)])
+    return ("%." + str(p) + "f %s") % ((x / math.pow(k, i)) , sizes[int(i)])
 
 
 class MinimalViewer:
@@ -122,7 +125,7 @@ class MinimalViewer:
         self.window.connect("delete-event", Gtk.main_quit)
         self.window.connect("check_resize", self._on_resize)
         self.window.connect("key-press-event", self._on_key_press)
-        self.window.connect('scroll-event', self.scroll_notify_event)
+        self.window.connect("scroll-event", self.scroll_notify_event)
         self.window.connect("window-state-event", self.on_window_state_event)
         
         # Image
@@ -131,7 +134,7 @@ class MinimalViewer:
         self.image_width = 0
         self.image_height = 0
         self.image_size = 0
-        self.image = self.builder.get_object('image1')
+        self.image = self.builder.get_object("image1")
         self.image.set_from_stock(Gtk.STOCK_NEW, Gtk.IconSize.DIALOG)
         self.lastResize = None
 
@@ -196,15 +199,15 @@ class MinimalViewer:
 
     def _on_key_press(self, win, ev):
         key = Gdk.keyval_name(ev.keyval)
-        if key == 'Left':
+        if key == "Left":
             self.previousImage()
             win.emit_stop_by_name("key-press-event")
             return True
-        elif key == 'Right':
+        elif key == "Right":
             self.nextImage()
             win.emit_stop_by_name("key-press-event")
             return True
-        elif key == 'f':
+        elif key == "f":
             self.fullscreen_mode()
             
             
